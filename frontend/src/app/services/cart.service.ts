@@ -50,7 +50,22 @@ cartDataObservable$ = new BehaviorSubject<cartModelServer>(this.cartDataServer)
             if(this.cartDataServer.data[0].numInCart===0 ){
               this.cartDataServer.data[0].numInCart = p.incart;
               this.cartDataServer.data[0].product =actuelProductInfo;
+              //TODO create calculateTotal function and replace it here 
+              this.cartDataClient.total =this.cartDataServer.total;
+              localStorage.setItem('cart',JSON.stringify(this.cartDataClient));
             }
+            else {
+              //cart DataServer has already some entery on it
+              this.cartDataServer.data.push({
+                numInCart:p.incart,
+                product:actuelProductInfo
+              })
+              //TODO create calculateTotal function and replace it here 
+              this.cartDataClient.total =this.cartDataServer.total;
+              localStorage.setItem('cart',JSON.stringify(this.cartDataClient));
+            }
+
+            this.cartDataObservable$.next({... this.cartDataServer});
           });
         });
 
