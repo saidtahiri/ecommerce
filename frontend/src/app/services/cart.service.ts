@@ -41,11 +41,12 @@ cartDataObservable$ = new BehaviorSubject<cartModelServer>(this.cartDataServer)
       this.cartDataObservable$.next(this.cartDataServer);
 
      let info = JSON.parse(localStorage.getItem('cart')+'');
+     //let infoo = JSON.parse(localStorage.getItem('cart')!);
       if(info ===! null && info===! undefined && info.prodData[0].incart ===!0 ){
         //this means that my localStorage is not empty. and has some information
         this.cartDataClient = info;
 
-        this,this.cartDataClient.prodData.forEach(p=>{
+        this.cartDataClient.prodData.forEach(p=>{
           this.productService.getSingleProduct(p.id).subscribe((actuelProductInfo:ProductModelServer)=>{
             if(this.cartDataServer.data[0].numInCart===0 ){
               this.cartDataServer.data[0].numInCart = p.incart;
@@ -81,7 +82,6 @@ cartDataObservable$ = new BehaviorSubject<cartModelServer>(this.cartDataServer)
   
 
   //check if thr variabl is null or has data on it
-
 
 
 
