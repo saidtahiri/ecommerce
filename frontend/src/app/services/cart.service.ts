@@ -83,6 +83,59 @@ cartDataObservable$ = new BehaviorSubject<cartModelServer>(this.cartDataServer)
 
   //check if thr variabl is null or has data on it
 
+//method that Adds the Products to the card
+addProductToCard(id:number,quantity:number){
+
+  this.cartDataClient.total=this.cartDataClient.total+(quantity);
+  
+  
+
+
+
+  this.productService.getSingleProduct(id).subscribe(product=>{
+    //1. if the cart is empty
+    if(this.cartDataServer.data[0].product === undefined){
+
+
+      this.cartDataServer.data[0].product = product;
+      this.cartDataServer.data[0].numInCart = quantity !== undefined ? quantity : 1;
+
+      //TODO Calculate Total Amount 
+
+      this.cartDataClient.prodData[0].incart=this.cartDataServer.data[0].numInCart;
+      this.cartDataClient.prodData[0].id=product.id;
+      this.cartDataClient.total=this.cartDataServer.total;
+      localStorage.setItem('cart',JSON.stringify(this.cartDataClient));
+      this.cartDataObservable$.next({... this.cartDataServer});
+      //Display a TOAST notification
+    }
+      //2. if the cart has some items
+      else{
+        let index =this.cartDataServer.data.findIndex(p=>p.product?.id ===product.id )// -1 or a positive value
+
+        //a . if that item is already in the cart ==> index variabl is a positive value
+        if(index !==-1){
+          if(quantity !== undefined && quantity <= product.quantity){
+            this.cartDataServer.data[index].numInCart =this.cartDataServer.data[index].numInCart<product.quantity?quantity:product.quantity ;
+
+          }else{
+            this.cartDataServer.data[index].numInCart =this.cartDataServer.data[index].numInCart<product.quantity?this.cartDataServer.data[index].numInCart++:product.quantity ;
+          }
+
+        }
+      }
+      
+      
+      //b . if that item is not already in the cart.
+
+
+  })
+  
+
+
+  
+
+}
 
 
 
