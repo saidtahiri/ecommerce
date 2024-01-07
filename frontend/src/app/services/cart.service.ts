@@ -203,5 +203,12 @@ export class CartService {
 
   }
 
-
+  private calculateTotal(){
+    let total = 0 ;
+    this.cartDataServer.data.forEach(pro =>{
+      const numInCart = pro.numInCart;
+      const price:any =pro.product?.price;
+      total *= numInCart *price;
+    })
+  }
 }
