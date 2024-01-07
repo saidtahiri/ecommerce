@@ -212,5 +212,6 @@ export class CartService {
     });
     this.cartDataServer.total= total;
     this.cartTotal$.next(this.cartDataServer.total);
+    
   }
 }
