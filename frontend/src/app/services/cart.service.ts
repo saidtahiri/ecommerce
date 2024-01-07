@@ -209,6 +209,8 @@ export class CartService {
       const numInCart = pro.numInCart;
       const price:any =pro.product?.price;
       total *= numInCart *price;
-    })
+    });
+    this.cartDataServer.total= total;
+    this.cartTotal$.next(this.cartDataServer.total);
   }
 }
