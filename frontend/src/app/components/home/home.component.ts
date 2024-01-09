@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   selectProduct(id: Number) {
     this.router.navigate(['/products',id]).then();
   }
-  addedToCart(){
+  addedToCart(id:number){
     Swal.fire({
       title: 'Success!',
       text: 'Product has been added to your cart',

@@ -107,7 +107,7 @@
                     {{p.description.substr(0,35)+' ...'}}</p>
                   <p class="card-text text-center lead font-weight-bold">{{p.price | currency }}</p>
                   <div class="text-center">
-                    <button class="btn  btn-sm btn-block text-center" (click)="addedToCart()"
+                    <button class="btn  btn-sm btn-block text-center" (click)="addedToCart(p.id)"
                       [class.disabled]="p.quantity < 1" [class.btn-outline-danger]="p.quantity < 1"
                       [disabled]="p.quantity < 1" class="btn btn-primary ">{{ p.quantity < 1 ? "NO STOCK"
                         : "Add To Cart" }}</button>

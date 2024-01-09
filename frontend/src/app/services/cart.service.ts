@@ -84,9 +84,9 @@ export class CartService {
   //check if thr variabl is null or has data on it
 
   //method that Adds the Products to the card
-  addProductToCard(id: number, quantity: number) {
+  addProductToCard(id: number, quantity?: number) {
 
-    this.cartDataClient.total = this.cartDataClient.total + (quantity);
+    this.cartDataClient.total = this.cartDataClient.total + (quantity? quantity : 0);
 
 
 
@@ -220,13 +220,13 @@ export class CartService {
   }
 
   private checkoutFromCart(userID:number){
-    this.http.post(`${this.serverUrl}/orders/payment`,null).subscribe((res:{success:boolean})=>{
+    this.http.post(`${this.serverUrl}/orders/payment`,null).subscribe((res:any)=>{
       if(res.success){
         this.resetServerData();
         this.http.post(`${this.serverUrl}/orders/new`,{
           userID:userID,
           products:this.cartDataClient.prodData
-        }).subscribe((data:OrderRespons)=>{
+        }).subscribe((data:any)=>{
 
 
           this.orderService.getSingleOrder(data.order_id).subscribe(prods=>{
