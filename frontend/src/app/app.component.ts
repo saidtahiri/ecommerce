@@ -17,7 +17,8 @@ import { OrderService } from './services/order.service';
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    imports: [  RouterLink,CommonModule, RouterOutlet, HomeComponent,HeaderComponent, FooterComponent,HttpClientModule,HttpClientModule],
+    imports: [  RouterLink,CommonModule, RouterOutlet, HomeComponent,HeaderComponent,
+       FooterComponent,HttpClientModule,HttpClientModule],
     providers:[ProductService,CartService,OrderService]
 })  
 export class AppComponent {

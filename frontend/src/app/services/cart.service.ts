@@ -8,6 +8,9 @@ import { NavigationExtras, Router } from '@angular/router';
 import { json } from 'stream/consumers';
 import { ProductModelServer } from '../models/product.model';
 
+import Swal from 'sweetalert2';
+import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,7 +40,7 @@ export class CartService {
 
 
   constructor(private http: HttpClient, private productService: ProductService, private orderService: OrderService,
-    private router: Router) {
+    private router: Router,private spinner:NgxSpinnerService) {
     this.cartTotal$.next(this.cartDataServer.total);
     this.cartDataObservable$.next(this.cartDataServer);
 
@@ -74,8 +77,6 @@ export class CartService {
     }
 
 
-
-
   }
 
   //Get infos from localstorage
@@ -109,6 +110,14 @@ export class CartService {
         localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
         this.cartDataObservable$.next({ ... this.cartDataServer });
         //Display a TOAST notification
+        Swal.fire({
+          title: "Product Added",
+          text: product.name +"Added To the card",
+          icon: "success",
+          timer:1500,
+          timerProgressBar:true,
+        });
+
       }
       //2. if the cart has some items
       else {
@@ -120,10 +129,18 @@ export class CartService {
             this.cartDataServer.data[index].numInCart = this.cartDataServer.data[index].numInCart < product.quantity ? quantity : product.quantity;
 
           } else {
-            this.cartDataServer.data[index].numInCart = this.cartDataServer.data[index].numInCart < product.quantity ? this.cartDataServer.data[index].numInCart++ : product.quantity;
+             this.cartDataServer.data[index].numInCart < product.quantity ? this.cartDataServer.data[index].numInCart++ : product.quantity;
           }
           this.cartDataClient.prodData[index].incart = this.cartDataServer.data[index].numInCart;
+          localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
           //Display a TOAST notification
+          Swal.fire({
+            title: "Product updated",
+            text: product.name +"updated To the card",
+            icon: "info",
+            timer:1500,
+            timerProgressBar:true,
+          });
         }
         //b . if that item is not already in the cart.
         else {
@@ -136,7 +153,15 @@ export class CartService {
             incart: 1,
             id: product.id
           });
+          localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
           //Display a TOAST notification
+        Swal.fire({
+          title: "Product Updated",
+          text: product.name +" Quantity updated in the card",
+          icon: "info",
+          timer:1500,
+          timerProgressBar:true,
+        });
 
           //TODO Calculate Total Amount 
           this.cartDataClient.total = this.cartDataServer.total;
@@ -241,6 +266,7 @@ export class CartService {
                 }
               };
               //TODO Hide spinner
+              this.spinner.hide().then();
               this.router.navigate(['thankyou'],navigationExtras).then(p=>{
                 this.cartDataClient= {
                   total: 0,
@@ -249,6 +275,18 @@ export class CartService {
                 this.cartTotal$.next(0);
                 localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
               });
+            }
+            else{
+              this.spinner.hide().then();
+              this.router.navigateByUrl('/checkout').then();
+              Swal.fire({
+                title: "Order Status",
+                text: " Sorry Failed to book the Order",
+                icon: "error",
+                timer:1500,
+                timerProgressBar:true,
+              });
+
             }
           })
         });

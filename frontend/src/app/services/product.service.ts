@@ -23,7 +23,7 @@ export class ProductService {
 
 //Get Single Product From the Server
 getSingleProduct(id:number):Observable<ProductModelServer>{
-  return this.http.get<ProductModelServer>(this.SERVER_URL+"/products"+id);
+  return this.http.get<ProductModelServer>(this.SERVER_URL+"/products/"+id);
 }
 
 

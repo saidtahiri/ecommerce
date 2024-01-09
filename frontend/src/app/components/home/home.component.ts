@@ -33,15 +33,18 @@ export class HomeComponent implements OnInit {
       
     });
   }
-  selectProduct(id: Number) {
+  selectProduct(id: number) {
     this.router.navigate(['/products',id]).then();
   }
   addedToCart(id:number){
+    this.cartService.addProductToCard(id);
     
      Swal.fire({
-      title: 'Success!',
-      text: 'Product has been added to your cart',
-      icon: 'success'
+      title: "Product Added",
+      text: id+" Added To the card",
+      icon: "success",
+      timer:1500,
+      timerProgressBar:true
     }); 
   }
   
