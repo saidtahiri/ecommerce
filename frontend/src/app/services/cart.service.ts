@@ -14,6 +14,7 @@ import { ProductModelServer } from '../models/product.model';
 export class CartService {
 
   private serverUrl = "http://localhost:3000/api";
+  
 
   //Data Variable To Store the cart information on the client's local Storage
   private cartDataClient: cartModelPublic = {

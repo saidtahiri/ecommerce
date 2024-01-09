@@ -5,6 +5,11 @@ import { Router } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { CartService } from '../../services/cart.service';
+import { HttpClientModule } from '@angular/common/http';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+
 
 
 
@@ -13,13 +18,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgFor,CurrencyPipe,RouterLink,RouterLinkActive],
+  imports: [NgFor,CurrencyPipe,RouterLink,RouterLinkActive,HttpClientModule,  NgxSpinnerModule,ToastrModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
   products:any = [];
-  constructor(private productService :ProductService,private router:Router){
+  constructor(private cartService:CartService,private productService :ProductService, private router:Router){
   }
   ngOnInit() {
     this.productService.getAllProducts().subscribe((prods)=>{
@@ -32,11 +37,12 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/products',id]).then();
   }
   addedToCart(id:number){
-    Swal.fire({
+    
+     Swal.fire({
       title: 'Success!',
       text: 'Product has been added to your cart',
       icon: 'success'
-    });
+    }); 
   }
   
 
