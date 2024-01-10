@@ -46,7 +46,7 @@ export class CartService {
 
     let info = JSON.parse(localStorage.getItem('cart') + '');
     //let infoo = JSON.parse(localStorage.getItem('cart')!);
-    if (info === ! null && info === !undefined && info.prodData[0].incart === !0) {
+    if (info !==  null && info !== undefined && info.prodData[0].incart !== 0) {
       //this means that my localStorage is not empty. and has some information
       this.cartDataClient = info;
 
@@ -57,7 +57,7 @@ export class CartService {
             this.cartDataServer.data[0].product = actuelProductInfo;
             //TODO create calculateTotal function and replace it here 
             
-            this.calculateTotal()
+            this.calculateTotal();
             this.cartDataClient.total = this.cartDataServer.total;
             localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
           }
