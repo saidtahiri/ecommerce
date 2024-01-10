@@ -56,6 +56,8 @@ export class CartService {
             this.cartDataServer.data[0].numInCart = p.incart;
             this.cartDataServer.data[0].product = actuelProductInfo;
             //TODO create calculateTotal function and replace it here 
+            
+            this.calculateTotal()
             this.cartDataClient.total = this.cartDataServer.total;
             localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
           }
@@ -66,6 +68,7 @@ export class CartService {
               product: actuelProductInfo
             })
             //TODO create calculateTotal function and replace it here 
+            this.calculateTotal()
             this.cartDataClient.total = this.cartDataServer.total;
             localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
           }
@@ -95,24 +98,31 @@ export class CartService {
 
 
     this.productService.getSingleProduct(id).subscribe(product => {
+
+     
+      var Name = product.name;
       //1. if the cart is empty
       if (this.cartDataServer.data[0].product === undefined) {
 
-
+        
+        console.log("the card is empty , and this is the first add!");
         this.cartDataServer.data[0].product = product;
         this.cartDataServer.data[0].numInCart = quantity !== undefined ? quantity : 1;
 
         //TODO Calculate Total Amount 
+        
 
         this.cartDataClient.prodData[0].incart = this.cartDataServer.data[0].numInCart;
         this.cartDataClient.prodData[0].id = product.id;
+        this.calculateTotal()
         this.cartDataClient.total = this.cartDataServer.total;
         localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
         this.cartDataObservable$.next({ ... this.cartDataServer });
         //Display a TOAST notification
+        console.log(Name +" Added To the card");
         Swal.fire({
           title: "Product Added",
-          text: product.name +"Added To the card",
+          text: product.name+" " +" Added To the card",
           icon: "success",
           timer:1500,
           timerProgressBar:true,
@@ -131,8 +141,10 @@ export class CartService {
           } else {
              this.cartDataServer.data[index].numInCart < product.quantity ? this.cartDataServer.data[index].numInCart++ : product.quantity;
           }
+          this.calculateTotal();
           this.cartDataClient.prodData[index].incart = this.cartDataServer.data[index].numInCart;
           localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+          
           //Display a TOAST notification
           Swal.fire({
             title: "Product updated",
@@ -141,30 +153,36 @@ export class CartService {
             timer:1500,
             timerProgressBar:true,
           });
+
+          this.cartDataClient.total = this.cartDataServer.total;
+            this.calculateTotal()
+            localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
         }
         //b . if that item is not already in the cart.
-        else {
+        else { 
 
           this.cartDataServer.data.push({
             numInCart: 1,
             product: product
           });
           this.cartDataClient.prodData.push({
-            incart: 1,
             id: product.id
+            ,incart: 1
           });
+          this.calculateTotal();
+          this.cartDataClient.total = this.cartDataServer.total;  
           localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
           //Display a TOAST notification
         Swal.fire({
           title: "Product Updated",
           text: product.name +" Quantity updated in the card",
-          icon: "info",
+          icon: "error",
           timer:1500,
           timerProgressBar:true,
         });
 
           //TODO Calculate Total Amount 
-          this.cartDataClient.total = this.cartDataServer.total;
+  
           localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
           this.cartDataObservable$.next({ ... this.cartDataServer });
         }
@@ -179,6 +197,7 @@ export class CartService {
       data.numInCart < Number(data.product?.quantity) ? data.numInCart++ : data.product?.quantity;
       this.cartDataClient.prodData[index].incart = data.numInCart;
       //TODO Calculate Total Amount 
+      this.calculateTotal();
       this.cartDataClient.total = this.cartDataServer.total;
       localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
       this.cartDataObservable$.next({ ... this.cartDataServer });
@@ -193,6 +212,7 @@ export class CartService {
         this.cartDataObservable$.next({ ... this.cartDataServer });
         this.cartDataClient.prodData[index].incart = data.numInCart;
         //TODO Calculate Total Amount 
+        this.calculateTotal();
         this.cartDataClient.total = this.cartDataServer.total;
         localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
 
@@ -205,13 +225,17 @@ export class CartService {
       this.cartDataServer.data.splice(index, 1);
       this.cartDataClient.prodData.splice(index, 1);
       //TODO Calculate Total Amount 
+      this.calculateTotal();
       this.cartDataClient.total = this.cartDataServer.total;
       if (this.cartDataClient.total === 0) {
         this.cartDataClient = { total: 0, prodData: [{ id: 0, incart: 0 }] }
         localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
       }
       else {
-        localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+        //localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+        this.cartDataClient.total = this.cartDataServer.total;
+            this.calculateTotal()
+            localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
       }
       if (this.cartDataServer.total === 0) {
         this.cartDataServer = {total: 0,data: [{product: undefined,numInCart: 0}]};
