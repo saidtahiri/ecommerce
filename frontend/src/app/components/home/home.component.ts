@@ -12,43 +12,41 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 
 
-
-
-
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgFor,CurrencyPipe,RouterLink,RouterLinkActive,HttpClientModule,  NgxSpinnerModule,ToastrModule],
+  imports: [NgFor, CurrencyPipe, RouterLink, RouterLinkActive, HttpClientModule, NgxSpinnerModule, ToastrModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
-  products:any = [];
-  constructor(private cartService:CartService,private productService :ProductService, private router:Router){
+  products: any = [];
+  constructor(private cartService: CartService, private productService: ProductService, private router: Router) {
   }
   ngOnInit() {
-    this.productService.getAllProducts().subscribe((prods)=>{
+    this.productService.getAllProducts().subscribe((prods) => {
       this.products = prods;
       //console.log(this.products)
-      
+
     });
   }
   selectProduct(id: number) {
-    this.router.navigate(['/products',id]).then();
+    this.router.navigate(['/products', id]).then();
   }
-  addedToCart(id:number){
-    this.cartService.addProductToCard(id);
+  addedToCart(id: number) {
     
-     Swal.fire({
-      title: "Product Added",
-      text: id+" Added To the card",
-      icon: "success",
-      timer:1500,
-      timerProgressBar:true
-    }); 
-  }
-  
+    this.cartService.addProductToCard(id,1);
 
+    Swal.fire({
+      title: "Product Added",
+      text: id + " Added To the card",
+      icon: "success",
+      timer: 1500,
+      timerProgressBar: true
+    });
   }
+
+
+}
 
 
