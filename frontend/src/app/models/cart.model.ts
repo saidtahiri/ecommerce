@@ -3,7 +3,7 @@ import { ProductModelServer } from "./product.model";
 export interface cartModelServer{
     total:number;
     data:[{
-        product:ProductModelServer|undefined,
+        product:ProductModelServer,
         numInCart:number
     }];
 }
