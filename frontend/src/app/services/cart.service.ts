@@ -24,12 +24,22 @@ export class CartService {
     total: 0,
     prodData: [{ id: 0, incart: 0 }]
   }
+  private productModelServer ={
+   id :0,
+      name :'',
+      category:'',
+      description:'',
+      price : 0,
+      image:'',
+      quantity:0,
+      images:''
+  }
   //Data Variable To Store the cart information on the Server
   private cartDataServer: cartModelServer = {
     total: 0,
     data: [{
-      product: undefined,
-      numInCart: 0
+      product: this.productModelServer,
+      numInCart: 0  
     }]
   }
 
@@ -233,7 +243,7 @@ export class CartService {
         localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
       }
       if (this.cartDataServer.total === 0) {
-        this.cartDataServer = { total: 0, data: [{ product: undefined, numInCart: 0 }] };
+        this.cartDataServer = { total: 0, data: [{ product: this.productModelServer, numInCart: 0 }] };
         this.cartDataObservable$.next({ ... this.cartDataServer });
       }
       else {
@@ -328,12 +338,30 @@ export class CartService {
     this.cartDataServer = {
       total: 0,
       data: [{
-        product: undefined,
+        product:{ id :0,
+          name :'',
+          category:'',
+          description:'',
+          price : 0,
+          image:'',
+          quantity:0,
+          images:''},
         numInCart: 0
       }]
     }
     this.cartDataObservable$.next({ ... this.cartDataServer });
   }
+
+
+
+
+  calculateSubTotal(index:number):number{
+    let subTotal=0;
+    const p = this.cartDataServer.data[index];
+    subTotal= p.product.price * p.numInCart;
+    return subTotal;
+  }
+  
 }
 
 
