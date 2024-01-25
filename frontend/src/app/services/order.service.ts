@@ -6,24 +6,24 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrderService {
- private products:ProductResponseModel[]=[];
- private serverUrl = "http://localhost:3000/api";
+  private products: ProductResponseModel[] = [];
+  private serverUrl = "http://localhost:3000/api";
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { 
+    //this is  my constructor
+  }
 
-getSingleOrder(orderId:number):Observable<ProductResponseModel[]>{
-  return this.http.get<ProductResponseModel[]>(this.serverUrl+'/orders'+orderId);
-
+  getSingleOrder(orderId: number): Observable<ProductResponseModel[]> {
+    return this.http.get<ProductResponseModel[]>(this.serverUrl + '/orders' + orderId);
+  }
 }
 
-}
 
-
-interface ProductResponseModel{
-  id:number;
-  title:string;
-  description:string;
-  price:number;
-  quantityOrdered:number;
-  image:string;
+interface ProductResponseModel {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  quantityOrdered: number;
+  image: string;
 }

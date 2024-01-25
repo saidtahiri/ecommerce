@@ -12,6 +12,7 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 
 
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit {
     this.productService.getAllProducts().subscribe((prods) => {
       this.products = prods;
       //console.log(this.products)
+    
 
     });
   }

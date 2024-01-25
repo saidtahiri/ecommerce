@@ -27,16 +27,15 @@
             "styles": [
               "src/styles.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              
               "src/styles.css"
             ],
             "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
               "./src/assets/js/jquery.min.js",
-              "./src/assets/js/bootstrap.min.js",
               "./src/assets/js/jquery.zoom.min.js",
+              "./src/assets/js/bootstrap.min.js",
               "./src/assets/js/nouislider.min.js",
               "./src/assets/js/slick.min.js"
-              
             ],
             "server": "src/main.server.ts",
             "prerender": true,
@@ -99,10 +98,18 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",  "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              
+              "src/styles.css", 
+               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/styles.css"
             ],
             "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "./src/assets/js/jquery.min.js",
+              "./src/assets/js/jquery.zoom.min.js",
+              "./src/assets/js/bootstrap.min.js",
+              "./src/assets/js/nouislider.min.js",
+              "./src/assets/js/slick.min.js"
             ]
           }
         }
