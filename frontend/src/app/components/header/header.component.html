@@ -87,16 +87,20 @@
               </a>
               <div class="cart-dropdown" aria-labelledby="dropdownMenuButton">
                 <div class="cart-list" *ngIf="cartData.data[0].numInCart !==0">
-                  <div class="product-widget" *ngFor="let c of cartData.data ; let i=index">
-                    <div class="product-img">
-                      <img [src]="c.product.image" [alt]="c.product.Name" width="20px">
+                  <div *ngFor="let c of cartData.data ; let i=index">
+                    <div class="product-widget"  >
+                      <div class="product-img product-img-navigate">
+                        <img [src]="c.product.image" [alt]="c.product.Name" width="20px" (click)="selectProduct(c.product.id)">
+                      </div>
+                      <div class="product-body product-img-navigate">
+                        <h3 class="product-name"><a (click)="selectProduct(c.product.id)" >{{c.product.Name}}</a></h3>
+                        <h4 class="product-price" (click)="selectProduct(c.product.id)"><span class="qty">  </span>{{ c.numInCart}} x {{c.product.price | currency}} =   {{c.numInCart*c.product.price | currency}}  </h4>
+                      </div>
+                      
+                      <button class="delete" (click)="this.carteService.deleteProductFromCart(i)"><i class="fa fa-close"></i></button>
                     </div>
-                    <div class="product-body">
-                      <h3 class="product-name"><a href="#">{{c.product.Name}}</a></h3>
-                      <h4 class="product-price"><span class="qty">  </span>{{ c.numInCart}} x {{c.product.price | currency}} =   {{c.numInCart*c.product.price | currency}}  </h4>
-                    </div>
-                    <button class="delete" (click)="this.carteService.deleteProductFromCart(i)"><i class="fa fa-close"></i></button>
                   </div>
+                 
                 </div>
                 <div class="cart-summary">
                   <small> {{this.cartData.data[0].numInCart !== 0 ? this.cartData.data.length : 0 }} Item(s) selected</small>
