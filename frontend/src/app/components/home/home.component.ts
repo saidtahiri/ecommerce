@@ -22,7 +22,10 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 })
 export class HomeComponent implements OnInit {
   products: any = [];
-  constructor(private cartService: CartService, private productService: ProductService, private router: Router) {
+  constructor(private cartService: CartService,
+     private productService: ProductService,
+      private router: Router) {
+
   }
   ngOnInit() {
     this.productService.getAllProducts().subscribe((prods) => {
@@ -37,15 +40,8 @@ export class HomeComponent implements OnInit {
   }
   addedToCart(id: number) {
     
-    this.cartService.addProductToCard(id,1);
+    this.cartService.addProductToCard(id);
 
-    Swal.fire({
-      title: "Product Added",
-      text: id + " Added To the card",
-      icon: "success",
-      timer: 1500,
-      timerProgressBar: true
-    });
   }
 
 
