@@ -11,28 +11,19 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CurrencyPipe,RouterLink,RouterLinkActive,CommonModule,RouterLink],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css',
-  providers:[CartService]
+  styleUrl: './header.component.css'
+  
 })
 export class HeaderComponent implements OnInit {
 
   cartData!: cartModelServer;
-  cartTotal!:number;
+  cartTotal:number=0;
   constructor(protected carteService :CartService,protected router:Router){
 
   }
-
   ngOnInit(): void {
     this.carteService.cartTotal$.subscribe(total =>this.cartTotal= total);
-    this.carteService.cartDataObservable$.subscribe(data =>this.cartData = data)
-  }
-  
-  clickme(){
-    Swal.fire({
-      title: 'Success!',
-      text: 'Your data has been saved.',
-      icon: 'success'
-    });
+    this.carteService.cartDataObservable$.subscribe(data =>this.cartData = data);
   }
 
 
