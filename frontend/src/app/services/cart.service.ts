@@ -8,6 +8,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { ProductModelServer } from '../models/product.model';
 import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { data } from 'jquery';
 
 @Injectable({
   providedIn: 'root'
@@ -114,9 +115,9 @@ export class CartService {
 
     this.productService.getSingleProduct(id).subscribe((product) => {
 
-      debugger;
-      console.log(' im in subscribe');
-      console.log(this.cartDataServer.data[0].product);
+      /* debugger; */
+      
+      /* console.log(this.cartDataServer.data[0].product); */
       //1. if the cart is empty
       if (this.cartDataServer.data.length > 0) {
         console.log("the card is empty , and this is the first add!");
@@ -138,14 +139,19 @@ export class CartService {
           timer: 1500,
           timerProgressBar: true,
         });
-        console.log( this.cartDataServer);
+        
+        console.log( this.cartDataServer.data.length);
+        
+        
       }
       //2. if the cart has some items
       else {
-        let index = this.cartDataServer.data.findIndex(p => p.product?.id === product.id)// -1 or a positive value
+        console.log("the card is not  empty");
+        let index = this.cartDataServer.data.findIndex(p => p.product.id === product.id)// -1 or a positive value
 
         //a . if that item is already in the cart ==> index variabl is a positive value
         if (index !== -1) {
+          console.log("the card is not  empty and the added item is already on the card");
           if (quantity !== undefined && quantity <= product.quantity) {
             this.cartDataServer.data[index].numInCart = this.cartDataServer.data[index].numInCart < product.quantity ? quantity : product.quantity;
 
@@ -238,7 +244,49 @@ export class CartService {
 
 
   deleteProductFromCart(index: number) {
-    if (window.confirm('Are You Sure you want to Remove The item?')) {
+
+    Swal.fire({
+      title: "Are You Sure you want to Remove The item?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+          this.cartDataServer.data.splice(index, 1);
+      this.cartDataClient.prodData.splice(index, 1);
+      //TODO Calculate Total Amount 
+      this.calculateTotal();
+      this.cartDataClient.total = this.cartDataServer.total;
+      if (this.cartDataClient.total === 0) {
+        this.cartDataClient = { total: 0, prodData: [{ id: 0, incart: 0 }] }
+        localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+      }
+      else {
+        //localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+        this.cartDataClient.total = this.cartDataServer.total;
+        this.calculateTotal();
+        localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+      }
+      if (this.cartDataServer.total === 0) {
+        this.cartDataServer = { total: 0, data: [{ product: this.productModelServer, numInCart: 0 }] };
+        this.cartDataObservable$.next({ ... this.cartDataServer });
+      }
+      else {
+        this.cartDataObservable$.next({ ... this.cartDataServer });
+      }
+
+        
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+    /* if (window.confirm('Are You Sure you want to Remove The item?')) {
       this.cartDataServer.data.splice(index, 1);
       this.cartDataClient.prodData.splice(index, 1);
       //TODO Calculate Total Amount 
@@ -261,11 +309,11 @@ export class CartService {
       else {
         this.cartDataObservable$.next({ ... this.cartDataServer });
       }
-    }
+    } 
     else {
       //if the user clicks the cancel button
       return;
-    }
+    }*/
   }
 
 
@@ -280,8 +328,7 @@ export class CartService {
       /* console.log(total); */
     });
     this.cartDataServer.total = total;
-    /* console.log(this.cartDataServer.total); */
-    this.cartTotal$.next(this.cartDataServer.total);
+    this.cartTotal$.next(total);
 
   }
 
