@@ -130,8 +130,19 @@ export class CartService {
         this.cartDataClient.total = this.cartDataServer.total;
         localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
         this.cartDataObservable$.next({ ... this.cartDataServer });
+        this.cartTotal$.next(this.cartDataServer.data.length)
+        
+        
+
+      /*   private cartDataServer: cartModelServer = {
+          total: 0,
+          data: [{
+            product: this.productModelServer,
+            numInCart: 0  
+          }]
+        } */
+        
         //Display a TOAST notification
-        console.log(product.Name + " Added To the card");
         Swal.fire({
           title: "Product Added",
           text: product.Name + " " + " Added To the card",
@@ -140,7 +151,6 @@ export class CartService {
           timerProgressBar: true,
         });
         
-        console.log( this.cartDataServer.data.length);
         
         
       }
@@ -250,8 +260,8 @@ export class CartService {
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: " #d33",
+      cancelButtonColor: "#3085d6",
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
@@ -276,12 +286,10 @@ export class CartService {
       }
       else {
         this.cartDataObservable$.next({ ... this.cartDataServer });
-      }
-
-        
+      }        
         Swal.fire({
           title: "Deleted!",
-          text: "Your file has been deleted.",
+          text: "item has been deleted.",
           icon: "success"
         });
       }
