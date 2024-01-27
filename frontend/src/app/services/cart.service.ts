@@ -5,11 +5,9 @@ import { OrderService } from './order.service';
 import { cartModelPublic, cartModelServer } from '../models/cart.model';
 import { BehaviorSubject } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
-import { json } from 'stream/consumers';
 import { ProductModelServer } from '../models/product.model';
-
 import Swal from 'sweetalert2';
-import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root'
@@ -24,15 +22,17 @@ export class CartService {
     total: 0,
     prodData: [{ id: 0, incart: 0 }]
   }
+  
   private productModelServer ={
-   id :0,
-      name :'',
-      category:'',
-      description:'',
+     
+      Category:'',
+      Name :'',
       price : 0,
-      image:'',
+      description:'',
       quantity:0,
-      images:''
+      image:'',
+      images:'',
+      id :0,
   }
   //Data Variable To Store the cart information on the Server
   private cartDataServer: cartModelServer = {
@@ -50,14 +50,20 @@ export class CartService {
 
 
   constructor(private http: HttpClient,
-     private productService: ProductService,
-      private orderService: OrderService,
+    private productService: ProductService,
+    private orderService: OrderService,
     private router: Router,
-     private spinner: NgxSpinnerService) {
+    private spinner: NgxSpinnerService) {
     this.cartTotal$.next(this.cartDataServer.total);
     this.cartDataObservable$.next(this.cartDataServer);
 
-    let info = JSON.parse(localStorage.getItem('cart') + '');
+    
+    if (typeof localStorage !== 'undefined') {
+      // Your code that uses localStorage
+      var info = JSON.parse(localStorage.getItem('cart') + '');
+    } else {
+      console.error('localStorage is not supported in this environment');
+    }
     //let infoo = JSON.parse(localStorage.getItem('cart')!);
     if (info !== null && info !== undefined && info.prodData[0].incart !== 0) {
       //this means that my localStorage is not empty. and has some information
@@ -101,20 +107,22 @@ export class CartService {
   //method that Adds the Products to the card
   addProductToCard(id: number, quantity?: number) {
 
+    
     this.cartDataClient.total = this.cartDataClient.total + (quantity ? quantity : 0);
-    this.productService.getSingleProduct(id).subscribe(product => {
-      var Name = product.name;
+    let m =this.cartDataClient.total;
+    
+
+    this.productService.getSingleProduct(id).subscribe((product) => {
+
+      debugger;
+      console.log(' im in subscribe');
+      console.log(this.cartDataServer.data[0].product);
       //1. if the cart is empty
-      if (this.cartDataServer.data[0].product === undefined) {
-
-
+      if (this.cartDataServer.data.length > 0) {
         console.log("the card is empty , and this is the first add!");
         this.cartDataServer.data[0].product = product;
         this.cartDataServer.data[0].numInCart = quantity !== undefined ? quantity : 1;
-
         //TODO Calculate Total Amount 
-
-
         this.cartDataClient.prodData[0].incart = this.cartDataServer.data[0].numInCart;
         this.cartDataClient.prodData[0].id = product.id;
         this.calculateTotal()
@@ -122,14 +130,15 @@ export class CartService {
         localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
         this.cartDataObservable$.next({ ... this.cartDataServer });
         //Display a TOAST notification
-        console.log(Name + " Added To the card");
+        console.log(product.Name + " Added To the card");
         Swal.fire({
           title: "Product Added",
-          text: product.name + " " + " Added To the card",
+          text: product.Name + " " + " Added To the card",
           icon: "success",
           timer: 1500,
           timerProgressBar: true,
         });
+        console.log( this.cartDataServer);
       }
       //2. if the cart has some items
       else {
@@ -150,7 +159,7 @@ export class CartService {
           //Display a TOAST notification
           Swal.fire({
             title: "Product updated",
-            text: product.name + "updated To the card",
+            text: product.Name + "updated To the card",
             icon: "info",
             timer: 1500,
             timerProgressBar: true,
@@ -177,7 +186,7 @@ export class CartService {
           //Display a TOAST notification
           Swal.fire({
             title: "Product Updated",
-            text: product.name + " Quantity updated in the card",
+            text: product.Name + " Quantity updated in the card",
             icon: "error",
             timer: 1500,
             timerProgressBar: true,
@@ -189,8 +198,11 @@ export class CartService {
           this.cartDataObservable$.next({ ... this.cartDataServer });
         }
       }
+    },err=>{
+      console.error(err)
     });
   }
+
 
   updateCartItems(index: number, increase: boolean) {
     let data = this.cartDataServer.data[index];
@@ -259,18 +271,16 @@ export class CartService {
 
 
 
-
-
-
-
   private calculateTotal() {
     let total = 0;
     this.cartDataServer.data.forEach(pro => {
       const numInCart = pro.numInCart;
-      const price: any = pro.product?.price;
-      total *= numInCart * price;
+      const price= pro.product.price;
+      total += numInCart * price;
+      /* console.log(total); */
     });
     this.cartDataServer.total = total;
+    /* console.log(this.cartDataServer.total); */
     this.cartTotal$.next(this.cartDataServer.total);
 
   }
@@ -338,14 +348,16 @@ export class CartService {
     this.cartDataServer = {
       total: 0,
       data: [{
-        product:{ id :0,
-          name :'',
-          category:'',
-          description:'',
-          price : 0,
-          image:'',
-          quantity:0,
-          images:''},
+        product:{ 
+            Category:'',
+            Name :'',
+            price : 0,
+            description:'',
+            quantity:0,
+            image:'',
+            images:'',
+            id :0,
+        },
         numInCart: 0
       }]
     }
@@ -355,7 +367,7 @@ export class CartService {
 
 
 
-  calculateSubTotal(index:number):number{
+  private calculateSubTotal(index:number):number{
     let subTotal=0;
     const p = this.cartDataServer.data[index];
     subTotal= p.product.price * p.numInCart;
