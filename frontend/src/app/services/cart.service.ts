@@ -58,7 +58,8 @@ export class CartService {
     this.cartTotal$.next(this.cartDataServer.total);
     this.cartDataObservable$.next(this.cartDataServer);
 
-    
+
+    /* console.log(this.productModelServer); */
     if (typeof localStorage !== 'undefined') {
       // Your code that uses localStorage
       var info = JSON.parse(localStorage.getItem('cart') + '');
@@ -235,6 +236,7 @@ export class CartService {
       data.numInCart--;
       if (data.numInCart < 1) {
         //TODO Delete the product from the cart
+        this.deleteProductFromCart(index,true);
         this.cartDataObservable$.next({ ... this.cartDataServer });
       }
       else {
@@ -253,47 +255,51 @@ export class CartService {
 
 
 
-  deleteProductFromCart(index: number) {
+  deleteProductFromCart(index: number,yes:boolean) {
 
-    Swal.fire({
-      title: "Are You Sure you want to Remove The item?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: " #d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-          this.cartDataServer.data.splice(index, 1);
-      this.cartDataClient.prodData.splice(index, 1);
-      //TODO Calculate Total Amount 
-      this.calculateTotal();
-      this.cartDataClient.total = this.cartDataServer.total;
-      if (this.cartDataClient.total === 0) {
-        this.cartDataClient = { total: 0, prodData: [{ id: 0, incart: 0 }] }
-        localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
-      }
-      else {
-        //localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
-        this.cartDataClient.total = this.cartDataServer.total;
+    if(yes){
+      Swal.fire({
+        title: "Are You Sure you want to Remove The item?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: " #d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+            this.cartDataServer.data.splice(index, 1);
+        this.cartDataClient.prodData.splice(index, 1);
+        //TODO Calculate Total Amount 
         this.calculateTotal();
-        localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
-      }
-      if (this.cartDataServer.total === 0) {
-        this.cartDataServer = { total: 0, data: [{ product: this.productModelServer, numInCart: 0 }] };
-        this.cartDataObservable$.next({ ... this.cartDataServer });
-      }
-      else {
-        this.cartDataObservable$.next({ ... this.cartDataServer });
-      }        
-        Swal.fire({
-          title: "Deleted!",
-          text: "item has been deleted.",
-          icon: "success"
-        });
-      }
-    });
+        this.cartDataClient.total = this.cartDataServer.total;
+        if (this.cartDataClient.total === 0) {
+          this.cartDataClient = { total: 0, prodData: [{ id: 0, incart: 0 }] }
+          localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+        }
+        else {
+          //localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+          this.cartDataClient.total = this.cartDataServer.total;
+          this.calculateTotal();
+          localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+        }
+        if (this.cartDataServer.total === 0) {
+          this.cartDataServer = { total: 0, data: [{ product: this.productModelServer, numInCart: 0 }] };
+          this.cartDataObservable$.next({ ... this.cartDataServer });
+        }
+        else {
+          this.cartDataObservable$.next({ ... this.cartDataServer });
+        }        
+          Swal.fire({
+            title: "Deleted!",
+            text: "item has been deleted.",
+            icon: "success"
+          });
+        }
+      });
+    }
+
+    
     /* if (window.confirm('Are You Sure you want to Remove The item?')) {
       this.cartDataServer.data.splice(index, 1);
       this.cartDataClient.prodData.splice(index, 1);
@@ -328,6 +334,7 @@ export class CartService {
 
 
   private calculateTotal() {
+    
     let total = 0;
     this.cartDataServer.data.forEach(pro => {
       const numInCart = pro.numInCart;
@@ -422,14 +429,45 @@ export class CartService {
 
 
 
-  private calculateSubTotal(index:number):number{
+  public  calculateSubTotal(index:number):number{
+    /* debugger; */
     let subTotal=0;
-    const p = this.cartDataServer.data[index];
-    subTotal= p.product.price * p.numInCart;
+    let p = this.cartDataServer.data;
+
+
+
+    p.forEach(p=>{
+      console.log(p)
+      if(p.product.id === index){
+        console.log('good')
+      }
+      else{
+        console.log('bad')
+      }
+    })
+    
+/*     console.log(index);
+    console.log(this.cartDataServer.data); */
+    /* console.log(p) */
+    //subTotal+= p.product.price * p.numInCart;
+    /* console.log(p.numInCart) */
     return subTotal;
   }
   
+ /*  let subTotal = 0;
+
+  let p = this.cartDataServer.data[index];
+  // @ts-ignore
+  subTotal = p.product.price * p.numInCart;
+
+  return subTotal; */
+
+
+
+
 }
+
+
 
 
 
