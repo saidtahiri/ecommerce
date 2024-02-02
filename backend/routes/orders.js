@@ -26,7 +26,7 @@ router.get('/',(req,res,next)=>{
             })
         }
     }).catch(error=>{
-        console.log(error+'')
+        console.log(error+' error1')
     }) 
 })
 
@@ -62,7 +62,7 @@ router.get('/:id',(req,res,next)=>{
           
         
     }).catch(error=>{
-        console.log(error+'')
+        console.log(error+' error2')
     }) 
 
 })
@@ -72,7 +72,7 @@ router.post('/new',(req,res,next)=>{
 
     /* let u = req.body.u;
     let products = req.body.products; */ 
-    console.log(req.body);
+    console.log(req.body + "error 3");
     if( u>0 && !isNaN(u) && u !== undefined){
         database.table('orders')
         .insert({
@@ -103,8 +103,8 @@ router.post('/new',(req,res,next)=>{
                             database.table('products').filter({id:p.id})
                             .update({quantity:data.quantity}).then(successNum=>{
 
-                            }).catch(err=>console.log(err))
-                    }).catch(err=>console.log(err))
+                            }).catch(err=>console.log(err +" error 4"))
+                    }).catch(err=>console.log(err+" error 5"))
                 });
             }   
             else{
@@ -120,7 +120,7 @@ router.post('/new',(req,res,next)=>{
             })
 
         }).catch(err=>{
-            console.log(err)
+            console.log(err+" error 6")
         })
     }
     else{
@@ -129,7 +129,7 @@ router.post('/new',(req,res,next)=>{
             success:false
         })
     }
-    console.log(u,products);
+    console.log(u,products + "error 7");
 
 })
 
