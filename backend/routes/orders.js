@@ -33,38 +33,45 @@ router.get('/',(req,res,next)=>{
 
 
 /* GET Single Order */
-router.get('/:id',(req,res,next)=>{
+router.get('/:id', (req, res, next) => {
     let id = req.params.id;
     console.log("the id is :" + id)
-    database.table('orders_details as od').join([{
-        table : 'orders as o',
-        on:'o.id = od.order_id'
-    },{
-        table : 'products as p',
-        on:'p.id = od.product_id'
-    },{
-        table : 'users as u',
-        on:'u.id = o.user_id '/* WHERE o.id ='+id */
-    }]).withFields(['od.order_id','o.id','p.title as name','p.description','p.price','u.username'])
-    .filter({'o.id' :id}).getAll()
-    .then(orders=>{
-        if(orders.length>0){
-            res.status(200).json({
-                    orders:orders
-            })   
-        }
-        else{
-            res.status(404).json({
-                message:'No Orders for the OrderId = '+id
-                
-            })
-        }
-          
-    }).catch(error=>{
-        console.log(error+' error2')
-    }) 
 
-})
+    database.table('orders_details as od').join([
+        {
+            table: 'orders as o',
+            on: 'o.id = od.order_id'
+        },
+        {
+            table: 'products as p',
+            on: 'p.id = od.product_id'
+        },
+        {
+            table: 'users as u',
+            on: 'u.id = o.user_id'
+        }
+    ]).withFields(['od.order_id', 'o.id', 'p.title as name', 'p.description', 'p.price', 'u.username'])
+        .filter({'od.order_id': id})  // Corrected filter condition to use od.order_id
+        .getAll()
+        .then(orders => {
+            if (orders.length > 0) {
+                res.status(200).json({
+                    orders: orders
+                });
+            } else {
+                res.status(404).json({
+                    message: 'No Orders for the OrderId = ' + id
+                });
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({
+                error: 'Internal Server Error'
+            });
+        });
+});
+
 
 router.post('/new',(req,res,next)=>{
     let {u , products} = req.body;
