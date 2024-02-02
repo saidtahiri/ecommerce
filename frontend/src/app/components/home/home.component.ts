@@ -9,6 +9,7 @@ import { CartService } from '../../services/cart.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 
@@ -16,7 +17,7 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgFor, CurrencyPipe, RouterLink, RouterLinkActive, HttpClientModule, NgxSpinnerModule, ToastrModule],
+  imports: [NgFor, CurrencyPipe, RouterLink, RouterLinkActive, HttpClientModule, NgxSpinnerModule, ToastrModule,MatPaginatorModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

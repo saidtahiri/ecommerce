@@ -12,7 +12,7 @@
           </div>
           <div class="shop-body">
             <h3>Top<br>Fossils</h3>
-            <a  class="cta-btn">See more!! <i class="fa fa-arrow-circle-right"></i></a>
+            <a class="cta-btn">See more!! <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@
           </div>
           <div class="shop-body">
             <h3>Top<br>Minerals</h3>
-            <a  class="cta-btn">See more! <i class="fa fa-arrow-circle-right"></i></a>
+            <a class="cta-btn">See more! <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
           </div>
           <div class="shop-body">
             <h3>Top<br>Meteorites</h3>
-            <a  class="cta-btn">See more! <i class="fa fa-arrow-circle-right"></i></a>
+            <a class="cta-btn">See more! <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
       </div>
@@ -69,37 +69,14 @@
       <!-- Products tab & slick -->
       <div class="col-md-12">
         <div class="row">
-          <!-- <div >
-              <div class="card my-2">
-               
-                <div class="card-header">
-                  <div class="card-title">
-                    <p>{{p.Name }}</p>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <p class="lead text-center">{{p.price | currency }}</p>
-                </div>
-  
-                <div class="row d-flex justify-content-center border-primary my-3">
-                  <div class="col-md-6 ">
-                    <button class="btn btn-outline-primary btn-sm btn-block"
-                    [class.disabled]="p.quantity < 1"
-                    [class.btn-outline-danger]="p.quantity < 1"
-                    [disabled]="p.quantity < 1">
-              {{ p.quantity < 1 ? "NO STOCK" : "Add To Cart"}}
-                    </button>
-                  </div>
-                </div>
-  
-              </div>
-  
-            </div> -->
           <div class="col-md-4 col-sm-6" *ngFor="let p of products.products">
             <div>
               <div class="card my-2">
-                <img [src]="p.image" alt="{{p.name}}" width="300px" (click)="selectProduct(p.id)" class="card-img-top"
-                  style="cursor:pointer;">
+                <div class="shop-img">
+                  <img [src]="p.image" alt="{{p.name}}" width="300px" height="300px" (click)="selectProduct(p.id)"
+                    class="card-img-top" style="cursor:pointer;">
+                </div>
+
                 <div class="card-body">
                   <h5 class="card-title" style="cursor:pointer;" (click)="selectProduct(p.id)">{{p.Name.substr(0,19)}}
                   </h5>
@@ -121,7 +98,10 @@
           </div>
 
         </div>
+        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+        </mat-paginator>
       </div>
+
     </div>
 
   </div>

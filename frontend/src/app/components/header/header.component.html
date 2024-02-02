@@ -25,13 +25,13 @@
         <div class="container">
           <div class="row">
             <div class="col">
-              Column
+              .
             </div>
             <div class="col">
-              Column
+              .
             </div>
             <div class="col">
-              Column
+              .
             </div>
           </div>
         </div>
@@ -52,11 +52,11 @@
         <div class="col-md-6">
           <div class="header-search">
             <form>
-              <select class="input-select">
+              <!-- <select class="input-select">
                 <option value="0">All Categories</option>
                 <option value="1">Fossils</option>
                 <option value="2">Minerals</option>
-              </select>
+              </select> -->
               <input class="input" placeholder="Search here">
               <button class="search-btn">Search</button>
             </form>
@@ -79,31 +79,41 @@
 
             <!-- Cart -->
             <div class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false" aria-expanded="true" style="cursor: pointer;">
+              <a class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton"
+                aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
                 <i class="fa fa-shopping-cart"></i>
                 <span>Your Cart</span>
-                <div class="qty">{{this.cartData.data[0].numInCart !== 0 ? this.cartData.data.length : 0 }}</div>
+                <div class="qty">{{ this.cartData.data.length > 0 ? cartData.data.length : 0 }}</div>
               </a>
               <div class="cart-dropdown" aria-labelledby="dropdownMenuButton">
-                <div class="cart-list" *ngIf="cartData.data[0].numInCart !==0">
-                  <div *ngFor="let c of cartData.data ; let i=index">
-                    <div class="product-widget"  >
+                <div class="cart-list" *ngIf="cartData.data.length >0">
+                  <div *ngFor="let c of cartData?.data; let i = index ; let last = last">
+                    <div class="product-widget">
                       <div class="product-img product-img-navigate">
                         <img [src]="c.product.image" [alt]="c.product.Name" width="20px" (click)="selectProduct(c.product.id)">
                       </div>
                       <div class="product-body product-img-navigate">
-                        <h3 class="product-name"><a (click)="selectProduct(c.product.id)" >{{c.product.Name}}</a></h3>
-                        <h4 class="product-price" (click)="selectProduct(c.product.id)"><span class="qty">  </span>{{ c.numInCart}} x {{c.product.price | currency}} =   {{c.numInCart*c.product.price | currency}}  </h4>
+                        <h3 class="product-name"><a (click)="selectProduct(c.product.id)">{{ c.product.Name }}</a></h3>
+                        <h4 class="product-price" (click)="selectProduct(c.product.id)">
+                          <span class="qty">{{ c.numInCart }} x </span>{{ c.product.price | currency }} =
+                          {{ c.numInCart * c.product.price | currency }}
+                        </h4>
                       </div>
-                      <button class="delete" (click)="this.carteService.deleteProductFromCart(i,true)"><i class="fa fa-close"></i></button>
+                      
+                      <button class="delete" (click)="carteService.deleteProductFromCart(i, true)">
+                        <i class="fa fa-close"></i>
+                      </button>
+                      <ng-container *ngIf="!last">
+                        <hr style="border-top: 1px solid #333; padding: 0.5px 0;">
+                      </ng-container>
+                     
+                      
                     </div>
                   </div>
-                 
                 </div>
                 <div class="cart-summary">
-                  <small> {{this.cartData.data[0].numInCart !== 0 ? this.cartData.data.length : 0 }} Item(s) selected</small>
-                  <h5>TOTAL : {{cartTotal | currency}} </h5>
+                  <small>{{ cartData.data.length }} Product(s) selected</small>
+                  <h5>TOTAL: {{ cartTotal | currency }}</h5>
                 </div>
                 <div class="cart-btns">
                   <a routerLink="/cart">View Cart</a>
@@ -111,6 +121,7 @@
                 </div>
               </div>
             </div>
+            
             <!-- /Cart -->
 
             <!-- Menu Toogle -->
@@ -155,5 +166,6 @@
     <!-- /responsive-nav -->
   </div>
   <!-- /container -->
+
 </nav>
 <!-- /NAVIGATION -->

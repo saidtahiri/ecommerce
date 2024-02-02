@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <ng-container *ngIf="cartData.data[0].numInCart !== 0">
+    <ng-container *ngIf="cartData.data.length > 0">
         <div class="row">
             <div class="col-md-12">
                 <table class="table">
@@ -31,7 +31,7 @@
                                 <span  class="text-danger mr-md-2" style="cursor: pointer;"> <i class="fa fa-trash"
                                     (click)="carteService.deleteProductFromCart(product.product.id,true)"></i>
                                 </span>
-                                <img [src]="product.product.image" [alt]="product.product.Name" height="60px">
+                                <img  [src]="product.product.image" [alt]="product.product.Name" height="60px">
                             </td>
                             <td>
                                 <p>{{product.product.Name}}</p>
@@ -53,7 +53,7 @@
                             </td>
                             <td>
                                 <p>
-                                    {{carteService.calculateSubTotal(product.product.id) | currency}}
+                                    {{this.carteService.calculateSubTotal(product.product.id) | currency}}
                                 </p>
                             </td>
                         </tr>

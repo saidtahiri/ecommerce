@@ -22,7 +22,7 @@ export class CartComponent implements OnInit {
   }
   ngOnInit(): void {
     this.carteService.cartTotal$.subscribe(total =>this.cartTotal= total);
-    this.carteService.cartDataObservable$.subscribe((data:cartModelServer) =>this.cartData = data);
+    this.carteService.cartDataObservable$.subscribe((data:cartModelServer) =>{this.cartData = data;});
   }
   changequantity(index: number,increase: boolean) {
     this.carteService.updateCartItems(index,increase)
