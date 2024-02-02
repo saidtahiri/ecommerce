@@ -40,7 +40,7 @@ import { Router } from '@angular/router';
         },
       });
     
-      this.carteService.checkoutFromCart(1);
+      this.orderService. getSingleOrder(1);
       // Simulate an asynchronous operation (replace this with your actual async logic)
       setTimeout(() => {
         // Close the Swal.fire modal when the async operation is complete
