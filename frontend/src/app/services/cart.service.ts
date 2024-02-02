@@ -215,8 +215,9 @@ export class CartService {
     this.cartTotal$.next(total);
   }
 
-  public checkoutFromCart(userID: number) {
-    // ... (existing code)
+  CheckoutFromCart(userId: Number) {
+
+      //code to write
   }
 
   private resetServerData() {
@@ -264,4 +265,13 @@ interface OrderRespons {
     id: string,
     numInCart: string
   }];
+}
+interface OrderConfirmationResponse {
+  order_id: Number;
+  success: Boolean;
+  message: String;
+  products: [{
+    id: String,
+    numInCart: String
+  }]
 }
