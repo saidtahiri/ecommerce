@@ -1,7 +1,7 @@
 <div class="container my-5 text-center">
     <!-- quand la carte est vide -->
 
-    <div class="text-center my-5" *ngIf="cartData.data[0].numInCart == 0">
+    <div class="text-center my-5" *ngIf="cartData.data.length == 0">
         <h4>Your Cart is empty</h4>
         <div class="card text-center">
             <div class="card-body">
