@@ -34,10 +34,10 @@ export class CartService {
 
   private cartDataServer: cartModelServer = {
     total: 0,
-    data: [{
+    data: [/* {
       product: this.productModelServer,
       numInCart: 0
-    }]
+    } */]
   }
 
   cartTotal$ = new BehaviorSubject<number>(0);
@@ -57,7 +57,7 @@ export class CartService {
       console.error('localStorage is not supported in this environment');
     }
 
-    if (info !== null && info !== undefined && info.prodData[0].incart !== 0) {
+    if (info !== null && info !== undefined && info.prodData[0].length > 0) {
       this.cartDataClient = info;
       this.cartDataClient.prodData.forEach(p => {
         this.productService.getSingleProduct(p.id).subscribe((actualProductInfo: ProductModelServer) => {
