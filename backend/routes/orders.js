@@ -34,8 +34,8 @@ router.get('/',(req,res,next)=>{
 
 /* GET Single Order */
 router.get('/:id',(req,res,next)=>{
-
     let id = req.params.id;
+    console.log("the id is :" + id)
     database.table('orders_details as od').join([{
         table : 'orders as o',
         on:'o.id = od.order_id'
@@ -51,7 +51,7 @@ router.get('/:id',(req,res,next)=>{
         if(orders.length>0){
             res.status(200).json({
                     orders:orders
-            })
+            })   
         }
         else{
             res.status(404).json({
@@ -60,7 +60,6 @@ router.get('/:id',(req,res,next)=>{
             })
         }
           
-        
     }).catch(error=>{
         console.log(error+' error2')
     }) 
