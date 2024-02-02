@@ -4,12 +4,12 @@
   import { cartModelServer } from '../../models/cart.model';
   import { CartService } from '../../services/cart.service';
   import { OrderService } from '../../services/order.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
   @Component({
     selector: 'app-checkout',
     standalone: true,
-    imports: [CurrencyPipe,NgFor,NgIf],
+    imports: [CurrencyPipe,NgFor,NgIf,RouterLink],
     templateUrl: './checkout.component.html',
     styleUrl: './checkout.component.css'
   })
