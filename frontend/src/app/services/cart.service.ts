@@ -167,8 +167,8 @@ export class CartService {
   deleteProductFromCart(index: number, yes: boolean) {
     if (yes) {
       Swal.fire({
-        title: "Are You Sure you want to Remove The item?",
-        text: "You won't be able to revert this!",
+        title: "Remove product from the cart?",
+        text: "Are You Sure you want to Remove This item from the cart ? You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: " #d33",
@@ -215,7 +215,7 @@ export class CartService {
     this.cartTotal$.next(total);
   }
 
-  private checkoutFromCart(userID: number) {
+  public checkoutFromCart(userID: number) {
     // ... (existing code)
   }
 
