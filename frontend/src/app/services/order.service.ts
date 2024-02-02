@@ -13,8 +13,8 @@ export class OrderService {
     //this is  my constructor
   }
 
-  getSingleOrder(orderId: number): Observable<ProductResponseModel[]> {
-    return this.http.get<ProductResponseModel[]>(this.serverUrl + '/orders' + orderId);
+  getSingleOrder(orderId: number) {
+    return this.http.get<ProductResponseModel[]>(this.serverUrl + '/orders/' + orderId).subscribe();
   }
 }
 
