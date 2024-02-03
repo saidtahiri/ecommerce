@@ -173,7 +173,18 @@
 </div>
 <!-- /SECTION -->
 
-<div class="text-center my-5" *ngIf="cartData.total <= 0">
+<!-- <div class="text-center my-5" *ngIf="cartData.total <= 0">
   <h4>Your Cart Is Empty</h4>
   <button class="btn btn-primary btn-lg mt-3" routerLink="/">GO TO SHOP</button>
+</div> -->
+
+<div class="text-center my-5" *ngIf="cartData.total <= 0">
+  <h4>Your Cart is empty</h4>
+  <div class="card text-center">
+      <div class="card-body">
+          <!-- <h5 class="card-title">Your Card Is Empty</h5> -->
+          <p class="card-text">Go back to the shop page and add items to your card.</p>
+          <button routerLink="/home" class="btn btn-primary btn-lg mt-3">GO TO SHOP</button>
+      </div>
+  </div>
 </div>
