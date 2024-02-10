@@ -12,6 +12,7 @@ import { MeteoritesComponent } from './components/meteorites/meteorites.componen
 import { FaqComponent } from './components/faq/faq.component';
 import { AboutusComponent } from './components/aboutus/aboutus.component';
 import { ContactusComponent } from './components/contactus/contactus.component';
+import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 
 export const routes: Routes = [
    {
@@ -53,5 +54,8 @@ export const routes: Routes = [
      {
       path:'contactus',component:ContactusComponent
      }, 
+     {
+      path:'**',component:PagenotfoundComponent
+     },
    
 ];

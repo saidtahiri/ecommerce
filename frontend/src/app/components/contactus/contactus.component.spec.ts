@@ -20,4 +20,13 @@ describe('ContactusComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+function add(a:number,b:number){
+  return a+b;
+}
+
+  it('return a +b ', () => {
+    expect(add(5,2)).toBe(7);
+  });
+
 });
