@@ -49,6 +49,7 @@ export class CartService {
     private router: Router,
     private spinner: NgxSpinnerService) {
     this.cartTotal$.next(this.cartDataServer.total);
+    
     this.cartDataObservable$.next(this.cartDataServer);
 
     if (typeof localStorage !== 'undefined') {
