@@ -55,7 +55,7 @@ export const routes: Routes = [
       path:'contactus',component:ContactusComponent
      }, 
      {
-      path:'**',component:PagenotfoundComponent
+      path:'**',component:PagenotfoundComponent 
      },
    
 ];
